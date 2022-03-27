@@ -30,27 +30,11 @@ class Timeslot(db.Model):
                         primary_key=True)
     date = db.Column(db.Datetime, nullable=False, unique=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+
+    user = db.relationship("User", backref="timeslots")
     
     def __repr__(self):
         return f'<Timeslot timeslot_id={self.timeslot_id} date={self.date}>'
-
-class Rating(db.Model):
-    """A rating."""
- 
-    __tablename__ = "ratings"
-
-    rating_id = db.Column(db.Integer,
-                        autoincrement=True,
-                        primary_key=True)
-    score = db.Column(db.Integer, nullable=False)
-    movie_id = db.Column(db.Integer, db.ForeignKey("movies.movie_id"))
-    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
-    
-    movie = db.relationship("Movie", backref="ratings")
-    user = db.relationship("User", backref="ratings")
-
-    def __repr__(self):
-        return f'<Rating rating_id={self.rating_id} score={self.score}>'
 
 
 
