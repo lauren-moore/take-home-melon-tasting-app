@@ -27,6 +27,11 @@ def get_timeslots_by_users(user):
 
     return Timeslot.query.filter(Timeslot.user == user).all()
 
+def get_timeslot_by_date(date):
+    '''get timeslot by date'''
+
+    return Timeslot.query.filter(Timeslot.date == date).first()
+
 def get_user_by_id(user_id):
     '''get user by id'''
 
@@ -36,6 +41,20 @@ def get_user_by_email(email):
     """Return a user by email."""
 
     return User.query.filter(User.email == email).first()
+
+def update_timeslot(date, user):
+    '''update timeslot by adding user'''
+
+    timeslot =  Timeslot.query.filter(Timeslot.date == date).first()
+    timeslot.user = user
+
+    return timeslot
+
+def delete_reservation(timeslot, user):
+    '''delete a user's reservation.'''
+
+
+
 
 if __name__ == '__main__':
     from server import app
