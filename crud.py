@@ -22,6 +22,11 @@ def get_timeslots():
 
     return Timeslot.query.all()
 
+def get_available_timeslots():
+    """Return all available timeslots."""
+
+    return Timeslot.query.filter(Timeslot.user == None).all()
+
 def get_timeslots_by_users(user):
     '''get timeslot by user id'''
 
