@@ -24,6 +24,35 @@ def all_movies():
     return render_template('appointments.html', avail_timeslots=avail_timeslots)
 
 
+@app.route("/login", methods=["POST"])
+def process_login():
+    """Process user login."""
+
+    email = request.form.get("email")
+
+    user = crud.get_user_by_email(email)
+    if not user:
+        flash("The email you entered was incorrect.")
+
+        return redirect(request.referrer)
+
+    else:
+        session["user_email"] = user.email
+        session["user_id"] = user.user_id
+        flash(f"Welcome back, {user.name.title()}!")
+        return redirect('/appointments')
+
+
+
+@app.route("/logout")
+def process_logout():
+    """Log user out."""
+
+    del session["user_id"]
+    flash("You have logged out!")
+
+    return redirect("/")
+
 if __name__ == "__main__":
     # DebugToolbarExtension(app)
     connect_to_db(app)
