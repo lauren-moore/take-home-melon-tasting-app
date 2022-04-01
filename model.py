@@ -1,6 +1,7 @@
 """Models for the Melon Tasting Reservation Scheduler app."""
 
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -28,13 +29,13 @@ class Timeslot(db.Model):
     timeslot_id = db.Column(db.Integer,
                         autoincrement=True,
                         primary_key=True)
-    date = db.Column(db.Datetime, nullable=False, unique=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+    date = db.Column(db.DateTime, nullable=False, unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=True)
 
     user = db.relationship("User", backref="timeslots")
     
     def __repr__(self):
-        return f'<Timeslot timeslot_id={self.timeslot_id} date={self.date}>'
+        return f'<Timeslot timeslot_id={self.timeslot_id} date={self.date} user={self.user.name}>'
 
 
 
