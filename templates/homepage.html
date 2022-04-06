@@ -5,14 +5,16 @@
 {% block body %}
   <h1 id="title">Welcome!</h1>
 
+    <div class="below-nav">
   <form action="/login" method="POST">
     <p>
-      Email <input type="text" name="email">
+      Email: <input type="text" name="email">
     </p>
 
     <p>
       <input type="submit">
     </p>
   </form>
+</div>
 
 {% endblock %}

@@ -24,8 +24,10 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <a class="nav-link active" aria-current="page" href="/">Home</a>
+             {% if 'user_id' in session %}
             <a class="nav-link" href="/upcoming_apps">My Reservations</a>
             <a class="nav-link" href="/appointments">Book a Tasting</a>
+            {% endif %}
           </div>
         </div>
       </div>
