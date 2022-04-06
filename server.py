@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, flash, session, redirect
 from model import db, connect_to_db
 from jinja2 import StrictUndefined
 import crud
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = "dev"
@@ -16,12 +17,48 @@ def homepage():
     return render_template('homepage.html')
 
 @app.route('/appointments')
-def all_movies():
+def show_app():
     """View available appointments page."""
 
-    avail_timeslots = crud.get_available_timeslots()
+    return render_template('appointments.html')
 
-    return render_template('appointments.html', avail_timeslots=avail_timeslots)
+
+@app.route("/appointments", methods=["POST"])
+def create_app():
+    """Create a new appointment."""
+
+    year = request.form.get("year")
+    month = request.form.get("month")
+    day = request.form.get("day")
+    time = request.form.get("time")
+
+    date_str = f"{day}/{month}/{year} {time}"
+    date = datetime.strptime(date_str, '%d/%m/%y %H:%M:%S')
+
+    #get user from session
+    user_logged_in = session.get("user_id")
+    user = crud.get_user_by_id(user_logged_in)
+
+    #create new appointment
+    new_app = crud.create_timeslot(date, user)
+    db.session.add(new_app)
+    db.session.commit()
+    flash("Your appointment has been set!")
+
+    return redirect('/')
+
+
+@app.route("/upcoming_apps")
+def show_upcoming_apps():
+    """Show all of user's reservations."""
+
+    user_logged_in = session.get("user_id")
+    user = crud.get_user_by_id(user_logged_in)
+
+    upcoming_apps = crud.get_timeslots_by_user(user)
+
+    return render_template('user_reservations.html',
+                            upcoming_apps=upcoming_apps)
 
 
 @app.route("/login", methods=["POST"])

@@ -29,7 +29,7 @@ class Timeslot(db.Model):
     timeslot_id = db.Column(db.Integer,
                         autoincrement=True,
                         primary_key=True)
-    date = db.Column(db.DateTime, nullable=False, unique=True)
+    date = db.Column(db.Integer, nullable=False, unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=True)
 
     user = db.relationship("User", backref="timeslots")
